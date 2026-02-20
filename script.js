@@ -98,10 +98,26 @@ async function actualizarPrecios() {
         console.error("Error:", error);
     }
 }
-let precioObjetivo = null;
+// 1. Recuperar alerta guardada al iniciar
+let precioObjetivo = localStorage.getItem('btc_alert_price');
 
-// Configurar el botón de alerta
+if (precioObjetivo) {
+    document.getElementById('alert-status').innerText = `Vigilando BTC a $${precioObjetivo}`;
+    document.getElementById('alert-status').style.color = "#00ffcc";
+}
+
+// 2. Configurar el botón para guardar permanentemente
 document.getElementById('set-alert-btn').addEventListener('click', () => {
+    const valor = document.getElementById('target-price').value;
+    if (valor) {
+        precioObjetivo = parseFloat(valor);
+        localStorage.setItem('btc_alert_price', precioObjetivo); // Guarda en el navegador
+
+        document.getElementById('alert-status').innerText = `Vigilando BTC a $${precioObjetivo}`;
+        document.getElementById('alert-status').style.color = "#00ffcc";
+    }
+});
+
     const valor = document.getElementById('target-price').value;
     if (valor) {
         precioObjetivo = parseFloat(valor);
