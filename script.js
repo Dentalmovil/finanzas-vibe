@@ -98,5 +98,30 @@ async function actualizarPrecios() {
         console.error("Error:", error);
     }
 }
+let precioObjetivo = null;
+
+// Configurar el botón de alerta
+document.getElementById('set-alert-btn').addEventListener('click', () => {
+    const valor = document.getElementById('target-price').value;
+    if (valor) {
+        precioObjetivo = parseFloat(valor);
+        document.getElementById('alert-status').innerText = `Vigilando BTC a $${precioObjetivo}`;
+        document.getElementById('alert-status').style.color = "#00ffcc";
+    }
+});
+
+// Dentro de tu función actualizarPrecios, añade esto al final:
+function revisarAlerta(precioActual) {
+    const tarjeta = document.querySelector('.balance-card');
+    
+    if (precioObjetivo && precioActual >= precioObjetivo) {
+        tarjeta.classList.add('alert-active');
+        // Opcional: Sonido de alerta
+        // alert("🎯 ¡Bitcoin alcanzó tu objetivo!");
+        document.getElementById('alert-status').innerText = "¡OBJETIVO ALCANZADO! 🚀";
+    } else {
+        tarjeta.classList.remove('alert-active');
+    }
+}
 
 
