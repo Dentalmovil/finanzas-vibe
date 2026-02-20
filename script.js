@@ -39,3 +39,35 @@ async function actualizarPrecios() {
 
 // Ejecutar al cargar la página
 actualizarPrecios();
+function crearGrafica() {
+    const ctx = document.getElementById('myChart').getContext('2d');
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'], // Días
+            datasets: [{
+                label: 'Rendimiento Semanal',
+                data: [12, 19, 15, 25, 22, 30, 45], // Datos de prueba
+                borderColor: '#00ffcc', // El verde neón que elegimos
+                backgroundColor: 'rgba(0, 255, 204, 0.1)',
+                borderWidth: 3,
+                tension: 0.4, // Esto hace que la línea sea curva y suave
+                pointRadius: 0 // Oculta los puntos para que sea más limpia
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }, // Quitamos la leyenda
+            scales: {
+                x: { display: false }, // Ocultamos los ejes para estilo "Mini"
+                y: { display: false }
+            }
+        }
+    });
+}
+
+// Llama a la función al final de tu archivo
+crearGrafica();
+
