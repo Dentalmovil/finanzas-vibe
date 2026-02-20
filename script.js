@@ -167,27 +167,36 @@ async function obtenerNoticias() {
 
 // Llama a la función al cargar la página
 obtenerNoticias();
-// Seleccionamos todos los botones de la barra y las secciones
+// --- CÓDIGO DE NAVEGACIÓN ---
+
+// 1. Seleccionamos los botones de la barra y todas las secciones de la app
 const navItems = document.querySelectorAll('.nav-item');
 const sections = document.querySelectorAll('.app-section');
 
+// 2. Escuchamos el clic en cada icono del menú
 navItems.forEach(item => {
     item.addEventListener('click', () => {
-        // Obtenemos el ID de la sección (Asegúrate que en el HTML diga data-target="ID")
+        // Obtenemos el nombre de la sección desde el atributo data-target
         const target = item.getAttribute('data-target');
 
-        // 1. Quitar la clase 'active' de todos los botones y ponerla al seleccionado
+        // A. CAMBIO VISUAL: Quitamos el color verde al icono anterior y se lo ponemos al nuevo
         navItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
 
-        // 2. Ocultar todas las secciones y mostrar solo la que queremos
+        // B. CAMBIO DE PANTALLA: Ocultamos todas las secciones
         sections.forEach(section => {
             section.style.display = 'none';
         });
 
-        const sectionToShow = document.getElementById(target);
-        if (sectionToShow) {
-            sectionToShow.style.display = 'block';
+        // C. MOSTRAR SECCIÓN: Buscamos la sección que coincide con el ID y la mostramos
+        const selectedSection = document.getElementById(target);
+        if (selectedSection) {
+            selectedSection.style.display = 'block';
+        }
+
+        // D. ACCIÓN EXTRA: Si el usuario toca "Noticias", las actualizamos automáticamente
+        if (target === 'view-news') {
+            obtenerNoticias();
         }
     });
 });
