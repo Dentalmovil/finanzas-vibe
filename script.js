@@ -167,5 +167,24 @@ async function obtenerNoticias() {
 
 // Llama a la función al cargar la página
 obtenerNoticias();
+// Seleccionamos todos los botones de la barra y las secciones
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('.app-section');
+
+navItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const target = item.getAttribute('data-target');
+
+        // 1. Quitar la clase 'active' de todos los botones y ponerla al seleccionado
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        // 2. Ocultar todas las secciones y mostrar solo la que queremos
+        sections.forEach(section => {
+            section.style.display = 'none';
+        });
+        document.getElementById(target).style.display = 'block';
+    });
+});
 
 
