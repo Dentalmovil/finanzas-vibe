@@ -168,11 +168,13 @@ async function obtenerNoticias() {
 // Llama a la función al cargar la página
 obtenerNoticias();
 // Seleccionamos todos los botones de la barra y las secciones
+// Seleccionamos todos los botones de la barra y las secciones
 const navItems = document.querySelectorAll('.nav-item');
 const sections = document.querySelectorAll('.app-section');
 
 navItems.forEach(item => {
     item.addEventListener('click', () => {
+        // Obtenemos el ID de la sección (Asegúrate que en el HTML diga data-target="ID")
         const target = item.getAttribute('data-target');
 
         // 1. Quitar la clase 'active' de todos los botones y ponerla al seleccionado
@@ -183,8 +185,10 @@ navItems.forEach(item => {
         sections.forEach(section => {
             section.style.display = 'none';
         });
-        document.getElementById(target).style.display = 'block';
+
+        const sectionToShow = document.getElementById(target);
+        if (sectionToShow) {
+            sectionToShow.style.display = 'block';
+        }
     });
 });
-
-
