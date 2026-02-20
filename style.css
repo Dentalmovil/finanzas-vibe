@@ -57,3 +57,12 @@ header {
     border-radius: 20px;
     border: 1px solid #2a2e39;
 }
+/* Color para cuando el mercado sube */
+.chart-up {
+    filter: drop-shadow(0 0 8px rgba(0, 255, 204, 0.4));
+}
+
+/* Color para cuando el mercado baja */
+.chart-down {
+    filter: drop-shadow(0 0 8px rgba(255, 68, 68, 0.4));
+}
