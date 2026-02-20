@@ -131,4 +131,19 @@ button {
     font-size: 20px;
     margin-bottom: 4px;
 }
+.news-item {
+    background: #2a2e39;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid #00ffcc;
+}
 
+.news-item h4 {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+}
+
+.news-item small {
+    color: #848e9c;
+}
