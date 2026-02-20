@@ -200,3 +200,30 @@ navItems.forEach(item => {
         }
     });
 });
+async function obtenerNoticias() {
+    const newsList = document.getElementById('news-list');
+    // Mostramos el spinner (esto borra lo anterior temporalmente)
+    newsList.innerHTML = '<div class="spinner"></div><p id="loading-text">Actualizando...</p>';
+
+    try {
+        const res = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
+        const data = await res.json();
+        
+        newsList.innerHTML = ''; // Quitamos el spinner
+
+        data.Data.slice(0, 5).forEach(noticia => {
+            const item = document.createElement('div');
+            item.className = 'news-item';
+            item.innerHTML = `
+                <a href="${noticia.url}" target="_blank" style="text-decoration:none; color:inherit;">
+                    <h4>${noticia.title}</h4>
+                    <small>${noticia.source}</small>
+                </a>
+            `;
+            newsList.appendChild(item);
+        });
+    } catch (error) {
+        newsList.innerHTML = '<p>Error al conectar con las noticias.</p>';
+    }
+}
+
