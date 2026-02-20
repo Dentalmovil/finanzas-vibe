@@ -66,3 +66,40 @@ header {
 .chart-down {
     filter: drop-shadow(0 0 8px rgba(255, 68, 68, 0.4));
 }
+.alerts-panel {
+    background: #1e222d;
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+
+input {
+    background: #0b0e11;
+    border: 1px solid #2a2e39;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 60%;
+}
+
+button {
+    background: #00ffcc;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Animación de alerta */
+@keyframes pulse-alert {
+    0% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(0, 255, 204, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0); }
+}
+
+.alert-active {
+    animation: pulse-alert 1.5s infinite;
+    border: 2px solid #00ffcc !important;
+}
+
