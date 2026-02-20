@@ -139,5 +139,33 @@ function revisarAlerta(precioActual) {
         tarjeta.classList.remove('alert-active');
     }
 }
+async function obtenerNoticias() {
+    try {
+        // Usamos la API de CryptoCompare (es gratuita)
+        const res = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
+        const data = await res.json();
+        
+        const newsList = document.getElementById('news-list');
+        newsList.innerHTML = ''; // Limpiar mensaje de carga
+
+        // Solo tomamos las primeras 3 noticias para que sea "Flash"
+        data.Data.slice(0, 3).forEach(noticia => {
+            const item = document.createElement('div');
+            item.className = 'news-item';
+            item.innerHTML = `
+                <a href="${noticia.url}" target="_blank" style="text-decoration:none; color:inherit;">
+                    <h4>${noticia.title}</h4>
+                    <small>${noticia.source} • Hace un momento</small>
+                </a>
+            `;
+            newsList.appendChild(item);
+        });
+    } catch (error) {
+        console.error("Error noticias:", error);
+    }
+}
+
+// Llama a la función al cargar la página
+obtenerNoticias();
 
 
