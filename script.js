@@ -168,7 +168,6 @@ async function obtenerNoticias() {
 // Llama a la función al cargar la página
 obtenerNoticias();
 // Seleccionamos todos los botones de la barra y las secciones
-// Seleccionamos todos los botones de la barra y las secciones
 const navItems = document.querySelectorAll('.nav-item');
 const sections = document.querySelectorAll('.app-section');
 
