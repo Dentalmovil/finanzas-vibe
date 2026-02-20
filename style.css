@@ -51,3 +51,9 @@ header {
     margin-bottom: 10px;
     border-left: 4px solid #f3ba2f; /* Color Bitcoin */
 }
+.chart-container {
+    background: #1e222d; /* El mismo fondo de tus tarjetas */
+    padding: 15px;
+    border-radius: 20px;
+    border: 1px solid #2a2e39;
+}
