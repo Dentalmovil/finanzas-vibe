@@ -1,227 +1,86 @@
+// --- LÓGICA DE PRECIOS Y GRÁFICA ---
 async function actualizarPrecios() {
     try {
-        const respuesta = await fetch('/api/get-prices');
-        const datos = await respuesta.json();
-
-        const lista = document.getElementById('crypto-list');
-        lista.innerHTML = ''; // Limpiamos el "Cargando..."
-
-        // Creamos las tarjetas para cada moneda
-        const monedas = [
-            { id: 'bitcoin', nombre: 'Bitcoin', simbolo: 'BTC', color: '#f3ba2f' },
-            { id: 'ethereum', nombre: 'Ethereum', simbolo: 'ETH', color: '#627eea' },
-            { id: 'solana', nombre: 'Solana', simbolo: 'SOL', color: '#14f195' }
-        ];
-
-        monedas.forEach(m => {
-            const precio = datos[m.id].usd;
-            const cambio = datos[m.id].usd_24h_change.toFixed(2);
-            const claseCambio = cambio >= 0 ? 'up' : 'down';
-
-            lista.innerHTML += `
-                <div class="asset-item" style="border-left-color: ${m.color}">
-                    <div>
-                        <strong>${m.nombre}</strong>
-                        <small>${m.simbolo}</small>
-                    </div>
-                    <div style="text-align: right">
-                        <div>$${precio.toLocaleString()}</div>
-                        <span class="${claseCambio}">${cambio}%</span>
-                    </div>
-                </div>
-            `;
-        });
-
-    } catch (error) {
-        console.error("Error cargando precios:", error);
-    }
-}
-
-// Ejecutar al cargar la página
-actualizarPrecios();
-let miGrafica; // Variable global para poder actualizarla
-
-function actualizarGrafica(datosCripto) {
-    const ctx = document.getElementById('myChart').getContext('2d');
-    
-    // Usamos el cambio de Bitcoin como referencia para el color general
-    const cambio24h = datosCripto.bitcoin.usd_24h_change;
-    const esPositivo = cambio24h >= 0;
-    const colorPrincipal = esPositivo ? '#00ffcc' : '#ff4444';
-    const colorFondo = esPositivo ? 'rgba(0, 255, 204, 0.1)' : 'rgba(255, 68, 68, 0.1)';
-
-    // Si la gráfica ya existe, la destruimos para crear la nueva con nuevos datos
-    if (miGrafica) {
-        miGrafica.destroy();
-    }
-
-    miGrafica = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['6h ago', '4h ago', '2h ago', 'Ahora'], 
-            datasets: [{
-                data: [
-                    datosCripto.bitcoin.usd * 0.98, // Simulación de tendencia
-                    datosCripto.bitcoin.usd * 0.99,
-                    datosCripto.bitcoin.usd * 0.97,
-                    datosCripto.bitcoin.usd
-                ],
-                borderColor: colorPrincipal,
-                backgroundColor: colorFondo,
-                borderWidth: 3,
-                tension: 0.4,
-                fill: true,
-                pointRadius: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: { x: { display: false }, y: { display: false } }
-        }
-    });
-}
-
-// Modifica tu función principal para que llame a la gráfica
-async function actualizarPrecios() {
-    try {
-        const respuesta = await fetch('/api/get-prices');
-        const datos = await respuesta.json();
-
-        // ... (aquí va tu código anterior que llena la lista de criptos)
-
-        // Llamamos a la nueva gráfica con los datos reales
-        actualizarGrafica(datos);
-
-    } catch (error) {
-        console.error("Error:", error);
-    }
-}
-// 1. Recuperar alerta guardada al iniciar
-let precioObjetivo = localStorage.getItem('btc_alert_price');
-
-if (precioObjetivo) {
-    document.getElementById('alert-status').innerText = `Vigilando BTC a $${precioObjetivo}`;
-    document.getElementById('alert-status').style.color = "#00ffcc";
-}
-
-// 2. Configurar el botón para guardar permanentemente
-document.getElementById('set-alert-btn').addEventListener('click', () => {
-    const valor = document.getElementById('target-price').value;
-    if (valor) {
-        precioObjetivo = parseFloat(valor);
-        localStorage.setItem('btc_alert_price', precioObjetivo); // Guarda en el navegador
-
-        document.getElementById('alert-status').innerText = `Vigilando BTC a $${precioObjetivo}`;
-        document.getElementById('alert-status').style.color = "#00ffcc";
-    }
-});
-
-    const valor = document.getElementById('target-price').value;
-    if (valor) {
-        precioObjetivo = parseFloat(valor);
-        document.getElementById('alert-status').innerText = `Vigilando BTC a $${precioObjetivo}`;
-        document.getElementById('alert-status').style.color = "#00ffcc";
-    }
-});
-
-// Dentro de tu función actualizarPrecios, añade esto al final:
-function revisarAlerta(precioActual) {
-    const tarjeta = document.querySelector('.balance-card');
-    
-    if (precioObjetivo && precioActual >= precioObjetivo) {
-        tarjeta.classList.add('alert-active');
-        // Opcional: Sonido de alerta
-        // alert("🎯 ¡Bitcoin alcanzó tu objetivo!");
-        document.getElementById('alert-status').innerText = "¡OBJETIVO ALCANZADO! 🚀";
-    } else {
-        tarjeta.classList.remove('alert-active');
-    }
-}
-async function obtenerNoticias() {
-    try {
-        // Usamos la API de CryptoCompare (es gratuita)
-        const res = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
+        const res = await fetch('/api/get-prices');
         const data = await res.json();
         
-        const newsList = document.getElementById('news-list');
-        newsList.innerHTML = ''; // Limpiar mensaje de carga
+        // Actualizar balance (ejemplo con BTC)
+        const btcPrice = data.bitcoin.usd;
+        document.getElementById('total-balance').textContent = 
+            `$${btcPrice.toLocaleString()}`;
 
-        // Solo tomamos las primeras 3 noticias para que sea "Flash"
-        data.Data.slice(0, 3).forEach(noticia => {
-            const item = document.createElement('div');
-            item.className = 'news-item';
-            item.innerHTML = `
-                <a href="${noticia.url}" target="_blank" style="text-decoration:none; color:inherit;">
-                    <h4>${noticia.title}</h4>
-                    <small>${noticia.source} • Hace un momento</small>
-                </a>
-            `;
-            newsList.appendChild(item);
-        });
+        // Lógica para actualizar tu gráfica aquí...
     } catch (error) {
-        console.error("Error noticias:", error);
+        console.error("Error al obtener precios:", error);
     }
 }
 
-// Llama a la función al cargar la página
-obtenerNoticias();
-// --- CÓDIGO DE NAVEGACIÓN ---
-
-// 1. Seleccionamos los botones de la barra y todas las secciones de la app
-const navItems = document.querySelectorAll('.nav-item');
-const sections = document.querySelectorAll('.app-section');
-
-navItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.getAttribute('data-target');
-
-        // 1. Activar icono
-        navItems.forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-
-        // 2. Mostrar sección
-        sections.forEach(section => {
-            section.style.display = 'none';
-        });
-
-        // Usamos el 'target' para encontrar la sección por su ID
-        const selected = document.getElementById(target);
-        if (selected) {
-            selected.style.display = 'block';
-        }
-
-        if (target === 'view-news') {
-            obtenerNoticias();
-        }
-    });
-});
-
+// --- LÓGICA DE NOTICIAS ---
 async function obtenerNoticias() {
     const newsList = document.getElementById('news-list');
-    // Mostramos el spinner (esto borra lo anterior temporalmente)
-    newsList.innerHTML = '<div class="spinner"></div><p id="loading-text">Actualizando...</p>';
+    if (!newsList) return;
+
+    // Mostrar spinner mientras carga
+    newsList.innerHTML = `
+        <div class="spinner"></div>
+        <p id="loading-text">Buscando las últimas noticias...</p>
+    `;
 
     try {
         const res = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
         const data = await res.json();
         
-        newsList.innerHTML = ''; // Quitamos el spinner
+        newsList.innerHTML = ''; // Limpiar cargando
 
         data.Data.slice(0, 5).forEach(noticia => {
             const item = document.createElement('div');
             item.className = 'news-item';
             item.innerHTML = `
                 <a href="${noticia.url}" target="_blank" style="text-decoration:none; color:inherit;">
-                    <h4>${noticia.title}</h4>
-                    <small>${noticia.source}</small>
+                    <h4 style="color:#00ffcc; margin-bottom:5px;">${noticia.title}</h4>
+                    <small style="color:#848e9c;">${noticia.source} • Cripto News</small>
                 </a>
+                <hr style="border:0; border-top:1px solid #2b3139; margin:10px 0;">
             `;
             newsList.appendChild(item);
         });
     } catch (error) {
-        newsList.innerHTML = '<p>Error al conectar con las noticias.</p>';
+        newsList.innerHTML = '<p>No se pudieron cargar las noticias.</p>';
     }
 }
+
+// --- LÓGICA DE NAVEGACIÓN (Corregida) ---
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('.app-section');
+
+navItems.forEach(item => {
+    item.addEventListener('click', () => {
+        // CORRECCIÓN: Obtener el valor de data-target correctamente
+        const targetId = item.getAttribute('data-target');
+
+        // 1. Cambiar estado visual de los iconos
+        navItems.forEach(nav => nav.classList.remove('active'));
+        item.classList.add('active');
+
+        // 2. Ocultar todas las secciones
+        sections.forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // 3. Mostrar la sección seleccionada
+        const selectedSection = document.getElementById(targetId);
+        if (selectedSection) {
+            selectedSection.style.display = 'block';
+        }
+
+        // 4. Cargar noticias solo si se entra a esa sección
+        if (targetId === 'view-news') {
+            obtenerNoticias();
+        }
+    });
+});
+
+// Inicializar la App
+actualizarPrecios();
+setInterval(actualizarPrecios, 30000); // Actualizar cada 30 segundos
 
