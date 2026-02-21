@@ -173,33 +173,31 @@ obtenerNoticias();
 const navItems = document.querySelectorAll('.nav-item');
 const sections = document.querySelectorAll('.app-section');
 
-// 2. Escuchamos el clic en cada icono del menú
 navItems.forEach(item => {
     item.addEventListener('click', () => {
-        // Obtenemos el nombre de la sección desde el atributo data-target
         const target = item.getAttribute('data-target');
 
-        // A. CAMBIO VISUAL: Quitamos el color verde al icono anterior y se lo ponemos al nuevo
+        // 1. Activar icono
         navItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
 
-        // B. CAMBIO DE PANTALLA: Ocultamos todas las secciones
+        // 2. Mostrar sección
         sections.forEach(section => {
             section.style.display = 'none';
         });
 
-        // C. MOSTRAR SECCIÓN: Buscamos la sección que coincide con el ID y la mostramos
-        const selectedSection = document.getElementById(target);
-        if (selectedSection) {
-            selectedSection.style.display = 'block';
+        // Usamos el 'target' para encontrar la sección por su ID
+        const selected = document.getElementById(target);
+        if (selected) {
+            selected.style.display = 'block';
         }
 
-        // D. ACCIÓN EXTRA: Si el usuario toca "Noticias", las actualizamos automáticamente
         if (target === 'view-news') {
             obtenerNoticias();
         }
     });
 });
+
 async function obtenerNoticias() {
     const newsList = document.getElementById('news-list');
     // Mostramos el spinner (esto borra lo anterior temporalmente)
