@@ -119,35 +119,6 @@ navItems.forEach(item => {
 actualizarPrecios();
 setInterval(actualizarPrecios, 30000); // Actualizar cada 30 segundos
 
-// Variables globales para la alerta
-let precioObjetivo = null;
-
-// 1. Función para establecer la alerta
-document.getElementById('set-alert-btn').addEventListener('click', () => {
-    const input = document.getElementById('target-price');
-    const valor = parseFloat(input.value);
-
-    if (valor > 0) {
-        precioObjetivo = valor;
-        document.getElementById('alert-status').innerHTML = `🔔 Alerta activa para BTC a: <strong>$${precioObjetivo.toLocaleString()}</strong>`;
-        document.getElementById('alert-status').style.color = "#00ffcc";
-        
-        // Guardar en el navegador para que no se borre al recargar
-        localStorage.setItem('alertaBTC', precioObjetivo);
-        alert("¡Alerta programada!");
-    } else {
-        alert("Por favor, ingresa un precio válido.");
-    }
-});
-
-// 2. Modifica tu función actualizarPrecios para que revise la alerta
-async function actualizarPrecios() {
-    try {
-        const res = await fetch('/api/get-prices');
-        const data = await res.json();
-        
-        const btcPrice = data.bitcoin.usd;
-        document.getElementById('total-balance').textContent = `$${btcPrice.toLocaleString()}`;
 
        
 
