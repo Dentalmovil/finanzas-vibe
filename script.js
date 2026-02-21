@@ -4,16 +4,50 @@ async function actualizarPrecios() {
         const res = await fetch('/api/get-prices');
         const data = await res.json();
         
-        // Actualizar balance (ejemplo con BTC)
+        // 1. Actualizar el Balance Principal (usando Bitcoin como referencia)
         const btcPrice = data.bitcoin.usd;
-        document.getElementById('total-balance').textContent = 
-            `$${btcPrice.toLocaleString()}`;
+        document.getElementById('total-balance').textContent = `$${btcPrice.toLocaleString()}`;
 
-        // Lógica para actualizar tu gráfica aquí...
+        // 2. Actualizar la Lista de Criptos (BTC, ETH, SOL)
+        const cryptoList = document.getElementById('crypto-list');
+        cryptoList.innerHTML = ''; // Limpiamos la lista anterior
+
+        // Creamos un arreglo con las monedas para recorrerlas
+        const coins = [
+            { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin' },
+            { id: 'ethereum', symbol: 'ETH', name: 'Ethereum' },
+            { id: 'solana', symbol: 'SOL', name: 'Solana' }
+        ];
+
+        coins.forEach(coin => {
+            const price = data[coin.id].usd;
+            const change = data[coin.id].usd_24h_change.toFixed(2);
+            const colorClass = change >= 0 ? 'up' : 'down';
+
+            const card = document.createElement('div');
+            card.className = 'asset-item';
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#1e2329; padding:15px; border-radius:12px; margin-bottom:10px; border:1px solid #2b3139;">
+                    <div>
+                        <strong style="display:block;">${coin.name}</strong>
+                        <small style="color:#848e9c;">${coin.symbol}</small>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-weight:bold;">$${price.toLocaleString()}</div>
+                        <small style="color: ${change >= 0 ? '#00ffcc' : '#ff4d4d'};">
+                            ${change >= 0 ? '▲' : '▼'} ${Math.abs(change)}%
+                        </small>
+                    </div>
+                </div>
+            `;
+            cryptoList.appendChild(card);
+        });
+
     } catch (error) {
         console.error("Error al obtener precios:", error);
     }
 }
+
 
 // --- LÓGICA DE NOTICIAS ---
 async function obtenerNoticias() {
