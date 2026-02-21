@@ -149,41 +149,7 @@ async function actualizarPrecios() {
         const btcPrice = data.bitcoin.usd;
         document.getElementById('total-balance').textContent = `$${btcPrice.toLocaleString()}`;
 
-        // --- LÓGICA DE VERIFICACIÓN DE ALERTA ---
-        // Recuperar alerta guardada si existe
-        const alertaGuardada = localStorage.getItem('alertaBTC');
-        if (alertaGuardada) precioObjetivo = parseFloat(alertaGuardada);
-
-        if (precioObjetivo) {
-            // Si el precio de BTC cruza tu objetivo (hacia arriba o hacia abajo)
-            if (btcPrice >= precioObjetivo) {
-                enviarNotificacionVisual(`¡BTC ha alcanzado tu objetivo de $${precioObjetivo}!`);
-                // Opcional: limpiar alerta después de que suene
-                // precioObjetivo = null;
-                // localStorage.removeItem('alertaBTC');
-            }
-        }
-        // ---------------------------------------
-
-        // (Aquí sigue el resto de tu código de la lista de criptos...)
-    } catch (error) {
-        console.error("Error:", error);
-    }
-}
-
-// 3. Función para mostrar el aviso en pantalla
-function enviarNotificacionVisual(mensaje) {
-    const status = document.getElementById('alert-status');
-    status.innerHTML = `🚀 <strong>${mensaje}</strong>`;
-    status.style.color = "#ff4d4d";
-    
-    // Si el usuario permite notificaciones del navegador
-    if (Notification.permission === "granted") {
-        new Notification("Alerta de Finanzas Vibe", { body: mensaje });
-    } else if (Notification.permission !== "denied") {
-        Notification.requestPermission();
-    }
-}
+       
 
 
 
