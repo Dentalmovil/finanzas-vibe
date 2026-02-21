@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><link rel="icon" href="https://cdn-icons-png.flaticon.com/512/25/25228.png">
-
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finanzas Vibe | Dashboard</title>
+    
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/5968/5968260.png">
+    
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+
     <div class="dashboard">
+        
         <section id="view-prices" class="app-section">
             <div class="balance-card">
                 <small>Balance Total Est.</small>
                 <h1 id="total-balance">$0.00</h1>
             </div>
 
-            <div class="chart-container">
+            <div class="chart-container" style="position: relative; height:250px; width:100%; margin-bottom: 20px;">
                 <canvas id="myChart"></canvas>
             </div>
 
@@ -29,7 +34,8 @@
         <section id="view-news" class="app-section" style="display: none;">
             <h3>Noticias Flash ⚡</h3>
             <div id="news-list">
-                <p>Cargando últimas noticias...</p>
+                <div id="loading-spinner" class="spinner"></div>
+                <p id="loading-text">Buscando las últimas noticias...</p>
             </div>
         </section>
 
@@ -58,57 +64,9 @@
                 <span>Alertas</span>
             </div>
         </nav>
-    </div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="chart-container" style="position: relative; height:200px; width:100%; margin-bottom: 20px;">
-    <canvas id="myChart"></canvas>
-</div>
-
-            <div class="stats">
-                <span class="up"><span class="material-icons">trending_up</span> +5.2%</span>
-            </div>
-        </div>
-
-        <div class="assets-<section">
-            <h3>Mercado en Vivo</h3>
-            <div id="crypto-list">
-                <div class="asset-item">
-                    <p>Cargando criptos...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-<nav class="mobile-nav">
-    <div class="nav-item active" data-target="view-prices">
-        <i class="fas fa-chart-line"></i>
-        <span>Precios</span>
-    </div>
-
-    <div class="nav-item" data-target="view-news">
-        <i class="fas fa-newspaper"></i>
-        <span>Noticias</span>
-    </div>
-
-    <div class="nav-item" data-target="view-alerts">
-        <i class="fas fa-bell"></i>
-        <span>Alertas</span>
-    </div>
-</nav>
-
-<section id="view-news" class="app-section" style="display: none;">
-    <h3>Noticias Flash ⚡</h3>
-    <div id="news-list">
-        <div id="loading-spinner" class="spinner"></div>
-        <p id="loading-text">Buscando las últimas noticias...</p>
-    </div>
-</section>
-
-
-    </div>
-</nav>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
+
