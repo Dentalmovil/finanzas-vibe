@@ -1,108 +1,79 @@
 //---LÓGICA DE PRECIOS Y GRÁFICA---
-let myChart = null;
-
 async function actualizarPrecios() {
     try {
         const res = await fetch('/api/get-prices');
         const data = await res.json();
         
         const balanceEl = document.getElementById('total-balance');
-        const nameEl = document.getElementById('balance-name');
-        const cryptoList = document.getElementById('crypto-list');
 
-        if (!data || !balanceEl) return;
-
-        // 1. Carga inicial de Bitcoin
-        if (!balanceEl.dataset.manual) {
+        // 1. Establecer Bitcoin como balance inicial al cargar
+        if (balanceEl && !balanceEl.dataset.manual) {
             balanceEl.textContent = `$${data.bitcoin.usd.toLocaleString()}`;
-            actualizarGrafica('#f7931a'); 
         }
 
-        if (cryptoList) {
-            cryptoList.innerHTML = ''; 
+        const cryptoList = document.getElementById('crypto-list');
+        if (!cryptoList) return;
+        
+        cryptoList.innerHTML = ''; 
 
-            const coins = [
-                { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', img: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png', color: '#f7931a' },
-                { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', img: 'https://cryptologos.cc/logos/ethereum-eth-logo.png', color: '#627eea' },
-                { id: 'binancecoin', symbol: 'BNB', name: 'BNB', img: 'https://cryptologos.cc/logos/bnb-bnb-logo.png', color: '#f3ba2f' },
-                { id: 'solana', symbol: 'SOL', name: 'Solana', img: 'https://cryptologos.cc/logos/solana-sol-logo.png', color: '#14f195' },
-                { id: 'ripple', symbol: 'XRP', name: 'XRP', img: 'https://cryptologos.cc/logos/xrp-xrp-logo.png', color: '#23292f' }
-            ];
+        const coins = [
+            { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', img: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png' },
+            { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', img: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' },
+            { id: 'binancecoin', symbol: 'BNB', name: 'BNB', img: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
+            { id: 'solana', symbol: 'SOL', name: 'Solana', img: 'https://cryptologos.cc/logos/solana-sol-logo.png' },
+            { id: 'ripple', symbol: 'XRP', name: 'XRP', img: 'https://cryptologos.cc/logos/xrp-xrp-logo.png' },
+            { id: 'tether', symbol: 'USDT', name: 'Tether', img: 'https://cryptologos.cc/logos/tether-usdt-logo.png' },
+            { id: 'usd-coin', symbol: 'USDC', name: 'USDC', img: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png' }
+        ];
 
-            coins.forEach(coin => {
-                if (data[coin.id]) {
-                    const price = data[coin.id].usd;
-                    const change = data[coin.id].usd_24h_change ? data[coin.id].usd_24h_change.toFixed(2) : "0.00";
+        coins.forEach(coin => {
+            if (data[coin.id]) {
+                const price = data[coin.id].usd;
+                const change = data[coin.id].usd_24h_change ? data[coin.id].usd_24h_change.toFixed(2) : "0.00";
 
-                    const card = document.createElement('div');
-                    card.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#1e2329; padding:12px; border-radius:12px; margin-bottom:10px; border:1px solid #2b3139; cursor:pointer;";
+                const card = document.createElement('div');
+                card.className = 'asset-item';
+                // Añadimos estilo de cursor pointer para que sepa que se puede clicar
+                card.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#1e2329; padding:12px; border-radius:12px; margin-bottom:10px; border:1px solid #2b3139; cursor:pointer; transition: 0.2s;";
+                
+                card.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px; pointer-events: none;">
+                        <img src="${coin.img}" style="width:24px; height:24px;">
+                        <div>
+                            <strong style="display:block; font-size:14px; color:#fff;">${coin.name}</strong>
+                            <small style="color:#848e9c; font-size:11px;">${coin.symbol}</small>
+                        </div>
+                    </div>
+                    <div style="text-align:right; pointer-events: none;">
+                        <div style="font-weight:bold; font-size:14px; color:#fff;">$${price < 1.1 ? price.toFixed(4) : price.toLocaleString()}</div>
+                        <small style="color: ${change >= 0 ? '#f7931a' : '#ff4d4d'}; font-size:11px;">
+                            ${change >= 0 ? '▲' : '▼'} ${Math.abs(change)}%
+                        </small>
+                    </div>
+                `;
+
+                // --- LÓGICA DE CLIC PARA EL BALANCE ---
+                card.addEventListener('click', () => {
+                    // Marcamos que el usuario eligió una moneda manualmente
+                    balanceEl.dataset.manual = "true"; 
                     
-                    card.innerHTML = `
-                        <div style="display:flex; align-items:center; gap:10px; pointer-events:none;">
-                            <img src="${coin.img}" style="width:24px; height:24px;">
-                            <div>
-                                <strong style="display:block; font-size:14px; color:#fff;">${coin.name}</strong>
-                                <small style="color:#848e9c;">${coin.symbol}</small>
-                            </div>
-                        </div>
-                        <div style="text-align:right; pointer-events:none;">
-                            <div style="font-weight:bold; color:#fff;">$${price < 1.1 ? price.toFixed(4) : price.toLocaleString()}</div>
-                            <small style="color: ${change >= 0 ? '#f7931a' : '#ff4d4d'};">
-                                ${change >= 0 ? '▲' : '▼'} ${Math.abs(change)}%
-                            </small>
-                        </div>
-                    `;
+                    // Actualizamos el balance con el precio de la moneda clicada
+                    const formattedPrice = price < 1.1 ? price.toFixed(4) : price.toLocaleString();
+                    balanceEl.textContent = `$${formattedPrice}`;
+                    
+                    // Efecto visual de selección (opcional)
+                    document.querySelectorAll('.asset-item').forEach(i => i.style.borderColor = '#2b3139');
+                    card.style.borderColor = '#f7931a';
+                });
 
-                    card.onclick = () => {
-                        balanceEl.dataset.manual = "true";
-                        nameEl.textContent = `Precio ${coin.name}`;
-                        balanceEl.textContent = `$${price < 1.1 ? price.toFixed(4) : price.toLocaleString()}`;
-                        actualizarGrafica(coin.color);
-                    };
+                cryptoList.appendChild(card);
+            }
+        });
 
-                    cryptoList.appendChild(card);
-                }
-            });
-        }
     } catch (error) {
-        console.error("Error cargando datos:", error);
+        console.error("Error al obtener precios:", error);
     }
 }
-
-function actualizarGrafica(color) {
-    const canvas = document.getElementById('coinChart');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    
-    if (myChart) { myChart.destroy(); }
-
-    myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['1', '2', '3', '4', '5', '6', '7'],
-            datasets: [{
-                data: Array.from({length: 7}, () => Math.floor(Math.random() * 50) + 50),
-                borderColor: color,
-                backgroundColor: color + '22',
-                fill: true,
-                tension: 0.4,
-                pointRadius: 0,
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: { x: { display: false }, y: { display: false } }
-        }
-    });
-}
-
-// Iniciar
-actualizarPrecios();
-setInterval(actualizarPrecios, 30000);
-
 
 
 // --- LÓGICA DE NOTICIAS ---
