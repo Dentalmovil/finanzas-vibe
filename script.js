@@ -145,9 +145,3 @@ navItems.forEach(item => {
 actualizarPrecios();
 setInterval(actualizarPrecios, 30000); // Actualizar cada 30 segundos
 
-
-       
-
-
-
-
