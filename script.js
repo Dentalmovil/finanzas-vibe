@@ -1,3 +1,4 @@
+//---LÓGICA DE PRECIOS Y GRÁFICA---
 let myChart = null; // Variable para controlar la gráfica
 
 async function actualizarPrecios() {
