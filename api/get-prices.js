@@ -1,12 +1,18 @@
+// api/get-prices.js
 export default async function handler(req, res) {
-  // Consultamos precios reales de criptos
-  const url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true';
-
   try {
-    const response = await fetch(url);
+    // Lista completa de las monedas que añadimos al script.js
+    const coins = 'bitcoin,ethereum,binancecoin,solana,ripple,tether,usd-coin';
+    
+    const response = await fetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=${coins}&vs_currencies=usd&include_24hr_change=true`
+    );
+    
     const data = await response.json();
-    return res.status(200).json(data);
+    
+    // Devolvemos los datos a tu App
+    res.status(200).json(data);
   } catch (error) {
-    return res.status(500).json({ error: 'Error al obtener precios' });
+    res.status(500).json({ error: 'Error al obtener los precios' });
   }
 }
