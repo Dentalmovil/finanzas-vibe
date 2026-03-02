@@ -6,7 +6,6 @@
     <title>Finanzas Vibe | Dashboard</title>
     
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/5968/5968260.png">
-    
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -17,25 +16,41 @@
         
         <section id="view-prices" class="app-section">
             <div class="balance-card">
-    <small id="balance-name">Precio Bitcoin</small>
-    <h1 id="total-balance">$0.00</h1>
-    
-    <div style="position: relative; height: 120px; width: 100%; margin-top: 15px;">
-        <canvas id="coinChart"></canvas>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="script.js"></script>
-
-
-            <div class="chart-container" style="position: relative; height:250px; width:100%; margin-bottom: 20px;">
-                <canvas id="myChart"></canvas>
+                <small id="balance-name">Precio Bitcoin</small>
+                <h1 id="total-balance">$0.00</h1>
+                
+                <div style="position: relative; height: 120px; width: 100%; margin-top: 15px;">
+                    <canvas id="coinChart"></canvas>
+                </div>
             </div>
 
-            <h3>Mercado en Vivo</h3>
-            <div id="crypto-list">
-                <p>Cargando criptos...</p>
+            <h3 style="margin: 20px 0 10px 0;">Mercado Principal</h3>
+            
+            <div id="crypto-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-bottom: 80px;">
+                
+                <div class="coin-card" style="background: #1a1d23; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #333;">
+                    <i class="fab fa-bitcoin" style="color: #f7931a; font-size: 1.5rem;"></i>
+                    <div style="margin-top: 5px; font-weight: bold; font-size: 0.9rem;">BTC</div>
+                    <div id="price-btc" style="color: #00ffa3; font-size: 1rem; font-weight: bold;">$0.00</div>
+                </div>
+
+                <div class="coin-card" style="background: #1a1d23; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #333;">
+                    <i class="fab fa-ethereum" style="color: #627eea; font-size: 1.5rem;"></i>
+                    <div style="margin-top: 5px; font-weight: bold; font-size: 0.9rem;">ETH</div>
+                    <div id="price-eth" style="color: #00ffa3; font-size: 1rem; font-weight: bold;">$0.00</div>
+                </div>
+
+                <div class="coin-card" style="background: #1a1d23; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #333;">
+                    <i class="fas fa-coins" style="color: #f3ba2f; font-size: 1.5rem;"></i>
+                    <div style="margin-top: 5px; font-weight: bold; font-size: 0.9rem;">BNB</div>
+                    <div id="price-bnb" style="color: #00ffa3; font-size: 1rem; font-weight: bold;">$0.00</div>
+                </div>
+
+                <div class="coin-card" style="background: #1a1d23; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #333;">
+                    <i class="fas fa-gem" style="color: #c99f4a; font-size: 1.5rem;"></i>
+                    <div style="margin-top: 5px; font-weight: bold; font-size: 0.9rem;">PAXG</div>
+                    <div id="price-paxg" style="color: #00ffa3; font-size: 1rem; font-weight: bold;">$0.00</div>
+                </div>
             </div>
         </section>
 
@@ -49,12 +64,18 @@
 
         <section id="view-alerts" class="app-section" style="display: none;">
             <div class="alerts-panel">
-                <h3>Establecer Alerta (BTC)</h3>
-                <div class="input-group">
-                    <input type="number" id="target-price" placeholder="Precio objetivo (USD)">
-                    <button id="set-alert-btn">Activar</button>
+                <h3>Establecer Alerta</h3>
+                <div class="input-group" style="display: flex; flex-direction: column; gap: 10px;">
+                    <select id="alert-coin" style="background: #1a1d23; color: white; padding: 12px; border-radius: 10px; border: 1px solid #444;">
+                        <option value="bitcoin">Bitcoin (BTC)</option>
+                        <option value="ethereum">Ethereum (ETH)</option>
+                        <option value="binancecoin">BNB</option>
+                        <option value="pax-gold">PAX Gold (PAXG)</option>
+                    </select>
+                    <input type="number" id="target-price" placeholder="Precio objetivo (USD)" style="padding: 12px; border-radius: 10px; border: 1px solid #444; background: #000; color: white;">
+                    <button id="set-alert-btn" style="background: #00ffa3; color: #000; font-weight: bold; padding: 12px; border-radius: 10px; border: none;">Activar Alerta</button>
                 </div>
-                <p id="alert-status">No hay alertas activas</p>
+                <p id="alert-status" style="margin-top: 20px; text-align: center; opacity: 0.7;">No hay alertas activas</p>
             </div>
         </section>
 
@@ -72,9 +93,11 @@
                 <span>Alertas</span>
             </div>
         </nav>
+    </div>
 
-    </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+
 
