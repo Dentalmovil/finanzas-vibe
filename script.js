@@ -109,4 +109,28 @@ initChart();
 fetchPrices();
 setInterval(fetchPrices, 30000); // Actualizar cada 30 segundos
 
+async function fetchNews() {
+    const newsList = document.getElementById('news-list');
+    try {
+        // Usamos una fuente de noticias cripto pública
+        const res = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
+        const data = await res.json();
+        
+        newsList.innerHTML = ''; // Limpiar el "Buscando..."
+        
+        data.Data.slice(0, 5).forEach(article => {
+            const newsItem = document.createElement('div');
+            newsItem.innerHTML = `
+                <h4 style="color: #00ffa3; font-size: 0.9rem;">${article.title}</h4>
+                <p style="font-size: 0.75rem; color: #ccc;">${article.source}</p>
+                <a href="${article.url}" target="_blank" style="color: #888; font-size: 0.7rem;">Leer más</a>
+            `;
+            newsList.appendChild(newsItem);
+        });
+    } catch (error) {
+        newsList.innerHTML = '<p>No se pudieron cargar las noticias.</p>';
+    }
+}
 
+// Llama a esta función al final del script
+fetchNews();
