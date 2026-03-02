@@ -19,3 +19,7 @@ Dashboard moderno para el seguimiento de criptomonedas en tiempo real, optimizad
 1. Clona el repositorio.
 2. Sube los archivos a Vercel.
 3. ¡Listo! La función en `/api/get-prices.js` gestionará las peticiones automáticamente.
+
+https://www.binance.com/referral/earn-together/refer2earn-usdc/claim?hl=es-LA&ref=GRO_28502_VU9YR&utm_source=default
+
+GRO_28502_VU9YR
