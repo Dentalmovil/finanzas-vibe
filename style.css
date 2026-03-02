@@ -1,150 +1,114 @@
-body {
-    background: #0b0e11; /* Fondo tipo Binance/Crypto.com */
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
-
-.dashboard {
-    width: 100%;
-    max-width: 400px;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.balance-card {
-    background: linear-gradient(135deg, #1e222d 0%, #131722 100%);
-    padding: 30px;
-    border-radius: 25px;
-    border: 1px solid #2a2e39;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    margin-bottom: 30px;
-}
-
-.balance-card h2 {
-    font-size: 2.5rem;
-    margin: 10px 0;
-    color: #00ffcc; /* Verde neón */
-}
-
-.up {
-    color: #00ff88;
-    display: flex;
-    align-items: center;
-    font-size: 0.9rem;
-}
-
-.asset-item {
-    background: #1e222d;
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 20px;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    border-left: 4px solid #f3ba2f; /* Color Bitcoin */
-}
-.chart-container {
-    background: #1e222d; /* El mismo fondo de tus tarjetas */
-    padding: 15px;
-    border-radius: 20px;
-    border: 1px solid #2a2e39;
-}
-/* Color para cuando el mercado sube */
-.chart-up {
-    filter: drop-shadow(0 0 8px rgba(0, 255, 204, 0.4));
-}
-
-/* Color para cuando el mercado baja */
-.chart-down {
-    filter: drop-shadow(0 0 8px rgba(255, 68, 68, 0.4));
-}
-.alerts-panel {
-    background: #1e222d;
-    padding: 15px;
-    border-radius: 15px;
-    margin-top: 20px;
-}
-
-input {
-    background: #0b0e11;
-    border: 1px solid #2a2e39;
-    color: white;
-    padding: 10px;
-    border-radius: 8px;
-    width: 60%;
-}
-
-button {
-    background: #00ffcc;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* 1. Reset y Estilos Globales */
+/* RESET GENERAL */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
-    background-color: #0b0e11; /* Color oscuro estilo Binance */
+    background-color: #0d0f12; /* Fondo oscuro profundo */
     color: #ffffff;
+    line-height: 1.6;
     overflow-x: hidden;
 }
 
 .dashboard {
+    max-width: 500px;
+    margin: 0 auto;
+    min-height: 100vh;
     padding: 20px;
-    padding-bottom: 80px; /* Espacio para que el menú no tape el contenido */
+    padding-bottom: 100px; /* Espacio para el menú inferior */
 }
 
-/* 2. Tarjeta de Balance */
+/* TARJETA PRINCIPAL (PRECIO BTC) */
 .balance-card {
-    background: linear-gradient(135deg, #1e2329 0%, #0b0e11 100%);
+    background: linear-gradient(145deg, #1a1d23, #111317);
     padding: 25px;
-    border-radius: 20px;
-    border: 1px solid #2b3139;
-    margin-bottom: 25px;
+    border-radius: 24px;
     text-align: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.balance-card small {
-    color: #848e9c;
+#balance-name {
+    color: #888;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-size: 0.75rem;
 }
 
-.balance-card h1 {
+#total-balance {
     font-size: 2.5rem;
-    color: #00ffcc; /* Verde Neón */
-    margin-top: 10px;
+    margin: 10px 0;
+    color: #00ffa3; /* Verde neón */
+    font-weight: 800;
 }
 
-/* 3. Navegación Móvil (Fixed al fondo) */
+/* CUADRÍCULA DE MONEDAS */
+#crypto-list {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Dos columnas fijas */
+    gap: 15px;
+}
+
+.coin-card {
+    transition: transform 0.2s;
+}
+
+.coin-card:active {
+    transform: scale(0.95);
+}
+
+/* SECCIONES */
+.app-section {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ALERTAS Y FORMULARIOS */
+.alerts-panel {
+    background: #1a1d23;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.app-input {
+    width: 100%;
+    background: #000;
+    border: 1px solid #333;
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    outline: none;
+}
+
+#set-alert-btn {
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#set-alert-btn:hover {
+    background: #00cc82;
+}
+
+/* NAVEGACIÓN INFERIOR */
 .mobile-nav {
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100%;
-    height: 70px;
-    background-color: #181a20;
+    right: 0;
+    background: rgba(13, 15, 18, 0.95);
+    backdrop-filter: blur(10px);
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    border-top: 1px solid #2b3139;
+    padding: 15px 0;
+    border-top: 1px solid #222;
     z-index: 1000;
 }
 
@@ -152,83 +116,28 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #848e9c;
+    color: #555;
+    font-size: 0.7rem;
     cursor: pointer;
-    transition: 0.3s;
+}
+
+.nav-item.active {
+    color: #00ffa3;
 }
 
 .nav-item i {
     font-size: 1.2rem;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
-.nav-item span {
-    font-size: 0.75rem;
-}
-
-.nav-item.active {
-    color: #00ffcc; /* Brillo cuando está activo */
-}
-
-/* 4. Spinner de Carga Animado */
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid rgba(255, 255, 255, 0.1);
-    border-left-color: #00ffcc;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 20px auto;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* 5. Noticias y Listas */
-.news-item {
-    background: #1e2329;
+/* NOTICIAS */
+#news-list div {
+    background: #1a1d23;
+    margin-bottom: 10px;
     padding: 15px;
     border-radius: 12px;
-    margin-bottom: 10px;
-    border-left: 4px solid #00ffcc;
+    border-left: 4px solid #00ffa3;
 }
 
-.news-item h4 {
-    font-size: 0.95rem;
-    margin-bottom: 5px;
-}
-
-/* 6. Panel de Alertas */
-.alerts-panel {
-    background: #1e2329;
-    padding: 20px;
-    border-radius: 15px;
-}
-
-.input-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-input[type="number"] {
-    background: #0b0e11;
-    border: 1px solid #2b3139;
-    color: white;
-    padding: 10px;
-    border-radius: 8px;
-    flex: 1;
-}
-
-button {
-    background: #00ffcc;
-    color: #0b0e11;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
 
 
