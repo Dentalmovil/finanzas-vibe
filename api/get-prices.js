@@ -2,7 +2,7 @@
 export default async function handler(req, res) {
   try {
     // Lista completa de las monedas que añadimos al script.js
-    const coins = 'bitcoin,ethereum,binancecoin,solana,ripple,usd-coin';
+    const coins = 'bitcoin,ethereum,binancecoin,solana,ripple';
     
     const response = await fetch(
       `https://api.coingecko.com/api/v3/simple/price?ids=${coins}&vs_currencies=usd&include_24hr_change=true`
