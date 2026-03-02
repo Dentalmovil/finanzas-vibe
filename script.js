@@ -22,7 +22,6 @@ async function actualizarPrecios() {
             { id: 'binancecoin', symbol: 'BNB', name: 'BNB', img: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
             { id: 'solana', symbol: 'SOL', name: 'Solana', img: 'https://cryptologos.cc/logos/solana-sol-logo.png' },
             { id: 'ripple', symbol: 'XRP', name: 'XRP', img: 'https://cryptologos.cc/logos/xrp-xrp-logo.png' },
-            { id: 'usd-coin', symbol: 'USDC', name: 'USDC', img: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png' }
         ];
 
         coins.forEach(coin => {
